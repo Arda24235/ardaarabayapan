@@ -1,0 +1,467 @@
+
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <meta
+    name="description"
+    content="Arda ARABAYAPAN'ın kişisel portföy sitesi. Yazılım öğrenme yolculuğu, teknolojiler ve örnek projeler."
+  >
+
+  <meta name="theme-color" content="#0b1120">
+
+  <title>Arda ARABAYAPAN | Kişisel Portföy</title>
+
+  <!-- Bootstrap 5 -->
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+  >
+
+  <!-- Özel CSS -->
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <!-- NAVBAR -->
+  <nav class="navbar navbar-expand-lg navbar-dark fixed-top main-navbar">
+    <div class="container">
+
+      <a class="navbar-brand logo" href="#anasayfa" aria-label="Arda A. ana sayfa">
+        <span class="logo-icon">A.</span>
+        <span class="logo-text">Arda <span>A.</span></span>
+      </a>
+
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#navbarMenu"
+        aria-controls="navbarMenu"
+        aria-expanded="false"
+        aria-label="Menüyü aç veya kapat"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarMenu">
+        <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-3">
+          <li class="nav-item">
+            <a class="nav-link active" href="#anasayfa">Ana Sayfa</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#hakkimda">Hakkımda</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#teknolojiler">Teknolojiler</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#projeler">Projeler</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link contact-link" href="#iletisim">İletişim</a>
+          </li>
+        </ul>
+      </div>
+
+    </div>
+  </nav>
+
+  <main>
+
+    <!-- ANA SAYFA -->
+    <section id="anasayfa" class="hero-section">
+      <div class="container">
+        <div class="row align-items-center min-vh-100 py-5">
+
+          <div class="col-lg-7 hero-content">
+            <div class="status-badge mb-4">
+              <span class="status-dot"></span>
+              Yazılım öğrenme yolculuğum devam ediyor
+            </div>
+
+            <p class="hero-eyebrow">MERHABA, BEN</p>
+
+            <h1>
+              Arda
+              <span class="gradient-text">ARABAYAPAN</span>
+            </h1>
+
+            <h2 class="hero-subtitle">
+              Yazılım Öğrencisi
+            </h2>
+
+            <p class="hero-description">
+              Yazılım dünyasını keşfediyor, yeni teknolojiler öğreniyor
+              ve öğrendiklerimi küçük projelerle geliştirmeyi hedefliyorum.
+              Bu site, öğrenme yolculuğumu ve çalışmalarımı paylaşmak için
+              hazırladığım kişisel portföyümdür.
+            </p>
+
+            <div class="d-flex flex-wrap gap-3 mt-4">
+              <a href="#projeler" class="btn btn-primary-custom">
+                Projelerimi Gör
+                <span aria-hidden="true">→</span>
+              </a>
+
+              <a href="#hakkimda" class="btn btn-outline-custom">
+                Beni Tanı
+              </a>
+            </div>
+
+            <div class="hero-footer mt-5">
+              <span class="small-line"></span>
+              <span>Öğren · Geliştir · Keşfet</span>
+            </div>
+          </div>
+
+          <!-- PROFİL / LOGO ALANI -->
+          <div class="col-lg-5 mt-5 mt-lg-0">
+            <div class="profile-area">
+
+              <div class="orbit orbit-one"></div>
+              <div class="orbit orbit-two"></div>
+
+              <div class="profile-card">
+                <div class="profile-card-top">
+                  <span class="window-dot red"></span>
+                  <span class="window-dot yellow"></span>
+                  <span class="window-dot green"></span>
+                  <span class="ms-auto small">arda.js</span>
+                </div>
+
+                <div class="profile-logo">A.</div>
+
+                <h2>Arda A.</h2>
+                <p>Yazılım Öğrencisi</p>
+
+                <div class="code-divider"></div>
+
+                <div class="code-line">
+                  <span class="code-purple">const</span>
+                  <span class="code-blue"> hedefim</span>
+                  <span class="text-white"> = </span>
+                  <span class="code-green">"gelişmek";</span>
+                </div>
+
+                <div class="code-line">
+                  <span class="code-purple">while</span>
+                  <span class="text-white"> (öğreniyorum) {</span>
+                </div>
+
+                <div class="code-line ps-3">
+                  <span class="code-blue">kendimiGeliştir</span>();
+                </div>
+
+                <div class="code-line text-white">}</div>
+              </div>
+
+              <div class="floating-badge badge-html">HTML</div>
+              <div class="floating-badge badge-css">CSS</div>
+              <div class="floating-badge badge-js">JS</div>
+
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- HAKKIMDA -->
+    <section id="hakkimda" class="section-padding">
+      <div class="container">
+
+        <div class="section-heading text-center">
+          <span class="section-label">BEN KİMİM?</span>
+          <h2>Hakkımda <span class="gradient-text">Kısa Bir Bilgi</span></h2>
+          <p>Yazılım öğrenme sürecim ve hedeflerim.</p>
+        </div>
+
+        <div class="row g-4 align-items-stretch mt-3">
+
+          <div class="col-lg-7">
+            <article class="info-card h-100">
+              <h3>Merhaba, ben Arda!</h3>
+
+              <p>
+                Ben Arda ARABAYAPAN. Yazılım dersleri alıyorum ve yazılım
+                geliştirme alanında kendimi geliştirmeye çalışıyorum.
+                Teknolojinin nasıl çalıştığını anlamak ve kendi
+                projelerimi oluşturmak ilgimi çekiyor.
+              </p>
+
+              <p>
+                Şu anda temel web teknolojilerine odaklanıyorum.
+                Öğrendiklerimi uygulayarak pekiştirmeyi, zamanla daha
+                kapsamlı projeler geliştirmeyi ve yeni araçlar keşfetmeyi
+                hedefliyorum.
+              </p>
+
+              <p class="mb-0">
+                Bu portföy, öğrenme sürecimi paylaşmak ve gelişimimi
+                göstermek için hazırladığım kişisel bir web sitesidir.
+              </p>
+            </article>
+          </div>
+
+          <div class="col-lg-5">
+            <article class="info-card goals-card h-100">
+              <h3>Hedeflerim</h3>
+
+              <ul class="goals-list">
+                <li>
+                  <span class="goal-icon" aria-hidden="true">01</span>
+                  <div>
+                    <h4>Temelleri Öğrenmek</h4>
+                    <p>HTML, CSS ve JavaScript bilgilerimi geliştirmek.</p>
+                  </div>
+                </li>
+
+                <li>
+                  <span class="goal-icon" aria-hidden="true">02</span>
+                  <div>
+                    <h4>Projeler Geliştirmek</h4>
+                    <p>Öğrendiklerimi uygulamalı çalışmalarla pekiştirmek.</p>
+                  </div>
+                </li>
+
+                <li>
+                  <span class="goal-icon" aria-hidden="true">03</span>
+                  <div>
+                    <h4>Kendimi Geliştirmek</h4>
+                    <p>Yeni teknolojiler keşfetmek ve öğrenmeye devam etmek.</p>
+                  </div>
+                </li>
+              </ul>
+
+            </article>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- TEKNOLOJİLER -->
+    <section id="teknolojiler" class="section-padding section-alt">
+      <div class="container">
+
+        <div class="section-heading text-center">
+          <span class="section-label">ÖĞRENME YOLCULUĞUM</span>
+          <h2>İlgilendiğim <span class="gradient-text">Teknolojiler</span></h2>
+          <p>Web geliştirme alanında üzerinde çalıştığım temel araçlar.</p>
+        </div>
+
+        <div class="row g-4 mt-3">
+
+          <div class="col-sm-6 col-lg-3">
+            <article class="tech-card h-100">
+              <div class="tech-icon html-icon">5</div>
+              <h3>HTML5</h3>
+              <p>Web sayfalarının yapısını ve içeriklerini oluşturmak.</p>
+              <span class="tech-tag">Yapı</span>
+            </article>
+          </div>
+
+          <div class="col-sm-6 col-lg-3">
+            <article class="tech-card h-100">
+              <div class="tech-icon css-icon">3</div>
+              <h3>CSS3</h3>
+              <p>Sayfaların görünümünü, renklerini ve düzenini tasarlamak.</p>
+              <span class="tech-tag">Tasarım</span>
+            </article>
+          </div>
+
+          <div class="col-sm-6 col-lg-3">
+            <article class="tech-card h-100">
+              <div class="tech-icon js-icon">JS</div>
+              <h3>JavaScript</h3>
+              <p>Web sayfalarına etkileşim ve dinamik özellikler eklemek.</p>
+              <span class="tech-tag">Etkileşim</span>
+            </article>
+          </div>
+
+          <div class="col-sm-6 col-lg-3">
+            <article class="tech-card h-100">
+              <div class="tech-icon bootstrap-icon">B</div>
+              <h3>Bootstrap 5</h3>
+              <p>Duyarlı tasarımlar ve hazır arayüz bileşenleri kullanmak.</p>
+              <span class="tech-tag">Arayüz</span>
+            </article>
+          </div>
+
+        </div>
+
+        <p class="section-note text-center mt-4">
+          Bu bölüm, üzerinde çalışmayı hedeflediğim teknolojileri gösterir.
+          İlerledikçe kendi gerçek öğrenme durumuma göre güncelleyebilirim.
+        </p>
+
+      </div>
+    </section>
+
+    <!-- PROJELER -->
+    <section id="projeler" class="section-padding">
+      <div class="container">
+
+        <div class="section-heading text-center">
+          <span class="section-label">ÇALIŞMALAR</span>
+          <h2>Örnek <span class="gradient-text">Projeler</span></h2>
+          <p>Portföyümü geliştirmek için değerlendirebileceğim proje fikirleri.</p>
+        </div>
+
+        <div class="row g-4 mt-3">
+
+          <div class="col-md-6 col-lg-4">
+            <article class="project-card h-100">
+              <div class="project-visual visual-one">
+                <span class="project-symbol" aria-hidden="true">&lt;/&gt;</span>
+                <span class="project-number">01</span>
+              </div>
+
+              <div class="project-content">
+                <span class="project-status">ÖRNEK FİKİR</span>
+                <h3>Kişisel Portföy</h3>
+                <p>
+                  Kişisel bilgilerimi, öğrendiğim teknolojileri ve çalışmalarımı
+                  tanıtabileceğim bir web sitesi.
+                </p>
+
+                <div class="project-tags">
+                  <span>HTML</span>
+                  <span>CSS</span>
+                  <span>Bootstrap</span>
+                </div>
+              </div>
+            </article>
+          </div>
+
+          <div class="col-md-6 col-lg-4">
+            <article class="project-card h-100">
+              <div class="project-visual visual-two">
+                <span class="project-symbol" aria-hidden="true">✓</span>
+                <span class="project-number">02</span>
+              </div>
+
+              <div class="project-content">
+                <span class="project-status">ÖRNEK FİKİR</span>
+                <h3>Yapılacaklar Listesi</h3>
+                <p>
+                  Görev ekleme, tamamlama ve silme özelliklerine sahip
+                  basit bir JavaScript uygulaması.
+                </p>
+
+                <div class="project-tags">
+                  <span>HTML</span>
+                  <span>CSS</span>
+                  <span>JavaScript</span>
+                </div>
+              </div>
+            </article>
+          </div>
+
+          <div class="col-md-6 col-lg-4">
+            <article class="project-card h-100">
+              <div class="project-visual visual-three">
+                <span class="project-symbol" aria-hidden="true">{ }</span>
+                <span class="project-number">03</span>
+              </div>
+
+              <div class="project-content">
+                <span class="project-status">ÖRNEK FİKİR</span>
+                <h3>Mini Bilgi Kartları</h3>
+                <p>
+                  Öğrenilen kavramları kartlar üzerinde gösterebileceğim
+                  basit ve duyarlı bir web arayüzü.
+                </p>
+
+                <div class="project-tags">
+                  <span>HTML</span>
+                  <span>CSS</span>
+                  <span>Bootstrap</span>
+                </div>
+              </div>
+            </article>
+          </div>
+
+        </div>
+
+        <p class="section-note text-center mt-4">
+          Not: Bu kartlar örnek proje fikirleridir; tamamlanmış projeler
+          veya mevcut çalışmalar olarak değerlendirilmemelidir.
+        </p>
+
+      </div>
+    </section>
+
+    <!-- İLETİŞİM -->
+    <section id="iletisim" class="section-padding section-alt">
+      <div class="container">
+
+        <div class="contact-panel text-center">
+          <span class="section-label">İLETİŞİM</span>
+
+          <h2>
+            Birlikte <span class="gradient-text">Tanışalım</span>
+          </h2>
+
+          <p>
+            Benimle iletişim kurmak veya çalışmalarım hakkında konuşmak
+            istersen aşağıdaki e-posta bağlantısını kullanabilirsin.
+          </p>
+
+          <!-- Bu adresi kendi e-posta adresinle değiştir. -->
+          <a
+            class="btn btn-primary-custom mt-3"
+            href="mailto:eposta-adresin@example.com"
+          >
+            <span aria-hidden="true">✉</span>
+            E-posta Gönder
+          </a>
+
+          <p class="email-note mt-3">
+            E-posta bağlantısını kullanmadan önce örnek adresi kendi
+            adresinle değiştirmeyi unutma.
+          </p>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="d-flex flex-column flex-md-row justify-content-between align-items-center gap-3">
+
+        <a class="navbar-brand logo" href="#anasayfa" aria-label="Sayfanın başına dön">
+          <span class="logo-icon">A.</span>
+          <span class="logo-text">Arda <span>A.</span></span>
+        </a>
+
+        <p class="footer-text mb-0">
+          © <span id="currentYear">2026</span> Arda ARABAYAPAN.
+          Öğrenmeye ve gelişmeye devam.
+        </p>
+
+        <a href="#anasayfa" class="back-to-top">
+          Yukarı çık ↑
+        </a>
+
+      </div>
+    </div>
+  </footer>
+
+  <!-- Bootstrap JavaScript -->
+  <script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+  ></script>
+
+  <!-- Özel JavaScript -->
+  <script src="script.js"></script>
+
+</body>
+</html>
