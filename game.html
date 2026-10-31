@@ -1,0 +1,588 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+  <meta name="theme-color" content="#101329">
+  <title>Kanatların Peşinde</title>
+  <style>
+    :root{color-scheme:dark;--ink:#17162a;--cream:#fff7dc;--gold:#ffd44d;--pink:#ff6486;--mint:#74e0bd}
+    *{box-sizing:border-box}html,body{height:100%;margin:0}body{font-family:ui-rounded,"Trebuchet MS",system-ui,sans-serif;background:#101329;color:var(--cream);overflow:hidden}
+    button{font:inherit;color:inherit;cursor:pointer;border:0}
+    .shell{height:100%;min-height:400px;display:grid;place-items:center;padding:clamp(10px,3vw,34px);background:radial-gradient(ellipse at 50% 0%,#343367 0,#1b1b3b 42%,#101329 100%);position:relative;isolation:isolate}
+    .shell:before,.shell:after{content:"";position:absolute;z-index:-1;border-radius:50%;filter:blur(1px);opacity:.45}.shell:before{width:360px;height:360px;left:-130px;bottom:-160px;background:#3e327a}.shell:after{width:250px;height:250px;right:-80px;top:10%;background:#5b294f}
+    .game-frame{width:min(100%,1000px);height:min(100%,690px);min-height:370px;position:relative;border:4px solid #58527c;border-radius:24px;overflow:hidden;box-shadow:0 25px 90px #050610aa, inset 0 0 0 3px #ffffff16;background:#88d8ef}
+    canvas{width:100%;height:100%;display:block;image-rendering:pixelated;touch-action:manipulation}
+    .hud{position:absolute;inset:0;pointer-events:none;display:flex;justify-content:space-between;align-items:flex-start;padding:16px}
+    .hud button{pointer-events:auto}.pause{width:46px;height:46px;border-radius:14px;background:#18182ccc;border:2px solid #ffffff55;box-shadow:0 4px 0 #0003;font-size:19px}.pause:hover{transform:translateY(-1px);background:#242341}
+    .score{font-weight:1000;font-size:clamp(25px,5vw,42px);letter-spacing:2px;-webkit-text-stroke:2px #28213d;text-shadow:0 4px 0 #28213d,2px 0 #28213d,-2px 0 #28213d;color:white;text-align:center;min-width:60px}
+    .badge{padding:10px 14px;border-radius:14px;background:#18182ccc;border:2px solid #ffffff55;font-size:12px;font-weight:900;letter-spacing:.1em;text-transform:uppercase}
+    .panel-wrap{position:absolute;inset:0;display:grid;place-items:center;padding:18px;background:#17142d49;backdrop-filter:blur(3px);transition:opacity .18s ease}
+    .panel-wrap.hidden{opacity:0;pointer-events:none}.panel{width:min(440px,100%);max-height:100%;overflow:auto;text-align:center;padding:clamp(20px,4vw,36px);border:3px solid #ffffff66;border-radius:26px;background:linear-gradient(155deg,#39345f,#201e3d 75%);box-shadow:0 12px 0 #121127,0 24px 60px #11112688;position:relative}
+    .eyebrow{margin:0 0 8px;color:var(--mint);font-size:11px;font-weight:1000;letter-spacing:.22em;text-transform:uppercase}.title{margin:0;color:#fff8db;font-size:clamp(30px,7vw,54px);line-height:.95;font-weight:1000;letter-spacing:-.04em;text-shadow:0 4px 0 #a8496d,0 7px 0 #19172c}.title span{color:var(--gold)}
+    .subtitle{margin:18px auto 22px;max-width:320px;color:#d6d2ed;line-height:1.5;font-size:14px}
+    .buttons{display:grid;gap:10px}.action{min-height:48px;border-radius:14px;padding:12px 18px;font-weight:1000;letter-spacing:.02em;background:#514a77;border:2px solid #ffffff36;box-shadow:0 4px 0 #16142a;transition:transform .12s,filter .12s}.action:hover{transform:translateY(-2px);filter:brightness(1.1)}.action:active{transform:translateY(2px);box-shadow:0 1px 0 #16142a}.action.primary{background:var(--gold);color:#30233c;border-color:#fff1a8}.action.secondary{background:#4b9b89;color:#102b35}.action.tertiary{background:transparent;border-color:#ffffff42;box-shadow:none}
+    .small-note{margin:17px 0 0;color:#b9b5d2;font-size:11px}.info-copy{color:#e3def3;text-align:left;line-height:1.65;font-size:14px;margin:18px 0}.info-copy strong{color:var(--gold)}
+    .costume-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;margin:20px 0}.costume{min-width:0;padding:8px 4px 9px;border-radius:14px;background:#15152b;border:2px solid #ffffff22;box-shadow:0 3px 0 #111020}.costume.selected{border-color:var(--gold);background:#514a77}.costume img{width:100%;height:54px;object-fit:contain;image-rendering:pixelated}.costume span{display:block;font-size:10px;font-weight:900;margin-top:3px}
+    .back{display:inline-flex;margin-top:3px;padding:9px 16px;background:transparent;color:#d0cce4;font-size:13px;font-weight:900}.back:hover{color:white}.hidden-view{display:none!important}
+    @media(max-width:560px){.shell{padding:0}.game-frame{width:100%;height:100%;border-radius:0;border:0;min-height:0}.hud{padding:12px}.pause{width:42px;height:42px}.badge{font-size:10px;padding:9px 10px}.panel-wrap{padding:12px}.panel{padding:22px 20px;border-radius:21px}.title{font-size:40px}.subtitle{margin:13px auto 18px}.buttons{gap:8px}.action{min-height:44px;padding:10px 14px}}
+    @media(max-height:520px) and (orientation:landscape){.panel{padding:15px 22px}.title{font-size:34px}.subtitle{margin:8px auto 12px}.buttons{grid-template-columns:1fr 1fr}.action{min-height:38px;padding:8px}.small-note{margin-top:10px}}
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <section class="game-frame" aria-label="Kanatların Peşinde oyunu">
+      <canvas id="game" aria-label="Engellerin arasından uçarak puan topla"></canvas>
+      <div class="hud">
+        <button class="pause" id="pauseBtn" aria-label="Menüye dön" title="Menü (Esc)">Ⅱ</button>
+        <div class="score" id="score">0</div>
+        <div class="badge">1. Seviye</div>
+      </div>
+      <div class="panel-wrap" id="panelWrap">
+        <section class="panel" id="mainPanel">
+          <p class="eyebrow">Tek kişilik arcade</p>
+          <h1 class="title">KANATLARIN<br><span>PEŞİNDE</span></h1>
+          <p class="subtitle" id="menuSubtitle">Engelleri aş, en yüksek skorunu yap!</p>
+          <div class="buttons">
+            <button class="action primary" id="startBtn">Oyunu başlat</button>
+            <button class="action secondary hidden-view" id="resumeBtn">Devam et</button>
+            <button class="action" id="costumeBtn">Kostümler</button>
+            <button class="action tertiary" id="aboutBtn">Hakkında</button>
+          </div>
+          <p class="small-note">Zıplamak için dokun veya boşluk tuşuna bas</p>
+        </section>
+        <section class="panel hidden-view" id="costumePanel">
+          <p class="eyebrow">Tarzını seç</p><h2 class="title" style="font-size:38px">KOSTÜMLER</h2>
+          <p class="subtitle">Uçuş arkadaşını seç ve oyuna dön.</p>
+          <div class="costume-grid" id="costumeGrid"></div>
+          <button class="action primary" id="costumeDone">Tamam</button>
+        </section>
+        <section class="panel hidden-view" id="aboutPanel">
+          <p class="eyebrow">Oyun rehberi</p><h2 class="title" style="font-size:38px">HAKKINDA</h2>
+          <p class="info-copy"><strong>Nasıl oynanır?</strong><br>Karakteri havalandırmak için ekrana dokun, fareye tıkla veya <strong>Boşluk</strong>/<strong>↑</strong> tuşuna bas. Borulara ve zemine çarpmadan boşluklardan geç; her boru geçişi 1 puan kazandırır.<br><br><strong>Duraklat / menü:</strong> Masaüstünde <strong>Esc</strong>, telefonda sol üstteki durdur düğmesi menüyü açar. Kaldığın yerden devam edebilirsin.<br><br><strong>Geliştirici:</strong> Arda ARABAYAPAN</p>
+          <button class="action primary" id="aboutDone">Menüye dön</button>
+        </section>
+        <section class="panel hidden-view" id="overPanel">
+          <p class="eyebrow">Uçuş sona erdi</p><h2 class="title" style="font-size:42px">OYUN<br><span>BİTTİ</span></h2>
+          <p class="subtitle" id="finalScore">Skorun: 0</p>
+          <div class="buttons"><button class="action primary" id="retryBtn">Tekrar oyna</button><button class="action tertiary" id="overMenuBtn">Ana menü</button></div>
+        </section>
+      </div>
+    </section>
+  </main>
+<script>
+(()=>{
+  const canvas=document.querySelector('#game'),ctx=canvas.getContext('2d');
+  const panelWrap=document.querySelector('#panelWrap'), panels=[...document.querySelectorAll('.panel')];
+  const imgs=['img/1.png','img/2.png','img/3.png','img/4.png','img/5.png'].map(src=>{const im=new Image();im.src=src;return im});
+  const names=['Beşiktaş','Galatasaray','Hayalet','Asi Kuş','Kral']; let selected=0;
+  let state='menu',score=0,best=Number(localStorage.getItem('kanatlar-best')||0),pipes=[],last=0,raf=0;
+  let bird={x:0,y:0,vy:0,angle:0}; let W=800,H=520,dpr=1,ground=0,world=0,ready=false;
+  function resize(){const r=canvas.getBoundingClientRect();dpr=Math.min(devicePixelRatio||1,2);canvas.width=Math.round(r.width*dpr);canvas.height=Math.round(r.height*dpr);W=r.width;H=r.height;ctx.setTransform(dpr,0,0,dpr,0,0);ground=H-56;if(!ready){bird.x=W*.27;bird.y=H*.43;ready=true}draw()}
+  const clamp=(n,a,b)=>Math.max(a,Math.min(b,n));
+  function show(which){panels.forEach(p=>p.classList.toggle('hidden-view',p.id!==which));panelWrap.classList.remove('hidden')}
+  function hidePanel(){panelWrap.classList.add('hidden')}
+  function updateMenu(){document.querySelector('#startBtn').classList.toggle('hidden-view',state==='paused');document.querySelector('#resumeBtn').classList.toggle('hidden-view',state!=='paused');document.querySelector('#menuSubtitle').textContent=state==='paused'?'Uçuşun duraklatıldı. Hazırsan kaldığın yerden devam et.':`En iyi skorun: ${best} · Engelleri aş, en yüksek skorunu yap!`;show('mainPanel')}
+  function makeCostumes(){const grid=document.querySelector('#costumeGrid');grid.innerHTML='';imgs.forEach((im,i)=>{const b=document.createElement('button');b.className='costume'+(i===selected?' selected':'');b.innerHTML=`<img src="${im.src}" alt=""><span>${names[i]}</span>`;b.onclick=()=>{selected=i;makeCostumes();draw()};grid.appendChild(b)})}
+  function start(){score=0;document.querySelector('#score').textContent='0';bird={x:W*.27,y:H*.43,vy:0,angle:0};pipes=[];world=0;addPipe(W+60);state='playing';hidePanel();last=performance.now();cancelAnimationFrame(raf);raf=requestAnimationFrame(loop)}
+  function pause(){if(state==='playing'){state='paused';cancelAnimationFrame(raf);updateMenu()}else if(state==='paused'){state='playing';hidePanel();last=performance.now();raf=requestAnimationFrame(loop)}}
+  function flap(){if(state==='playing'){bird.vy=-H*.58}else if(state==='menu')start()}
+  function addPipe(x){const gap=clamp(H*.34,142,190);const margin=65;const top=margin+Math.random()*Math.max(1,ground-gap-margin*2);pipes.push({x,top,gap,scored:false})}
+  function endGame(){state='over';cancelAnimationFrame(raf);if(score>best){best=score;localStorage.setItem('kanatlar-best',best)}document.querySelector('#finalScore').textContent=`Skorun: ${score}  ·  En iyi: ${best}`;show('overPanel')}
+  function loop(t){if(state!=='playing')return;const dt=Math.min((t-last)/1000,.035);last=t;update(dt);draw();raf=requestAnimationFrame(loop)}
+  function update(dt){const speed=Math.max(175,W*.34);bird.vy+=H*1.42*dt;bird.y+=bird.vy*dt;bird.angle=clamp(bird.vy/520,-.5,.9);world+=speed*dt;
+    for(const p of pipes){p.x-=speed*dt;if(!p.scored&&p.x+72<bird.x){p.scored=true;score++;document.querySelector('#score').textContent=score}}
+    if(pipes.length&&pipes[pipes.length-1].x<W- Math.max(220,W*.42))addPipe(W+15);pipes=pipes.filter(p=>p.x>-100);
+    const bx=bird.x,by=bird.y,bw=46,bh=36;if(by+bh/2>=ground||by-bh/2<=0){endGame();return}
+    for(const p of pipes){const overlaps=bx+bw/2>p.x&&bx-bw/2<p.x+72;if(overlaps&&(by-bh/2<p.top||by+bh/2>p.top+p.gap)){endGame();return}}
+  }
+  function draw(){if(!ctx||!W||!H)return;ctx.clearRect(0,0,W,H);const sky=ctx.createLinearGradient(0,0,0,H);sky.addColorStop(0,'#64c9ee');sky.addColorStop(.72,'#a5e9e7');sky.addColorStop(1,'#dcf0c7');ctx.fillStyle=sky;ctx.fillRect(0,0,W,H);
+    // soft sun and pixel clouds
+    ctx.fillStyle='#fff2a6';ctx.beginPath();ctx.arc(W*.79,H*.18,Math.min(W,H)*.075,0,Math.PI*2);ctx.fill();
+    for(let i=0;i<5;i++){const x=((i*211-world*.12)%(W+200)+W+200)%(W+200)-70,y=H*(.16+(i%3)*.105);cloud(x,y,1+(i%2)*.25)}
+    ctx.fillStyle='#6cbd9d';for(let i=0;i<8;i++){const x=((i*150-world*.2)%(W+150)+W+150)%(W+150)-40;ctx.beginPath();ctx.ellipse(x,ground-5,95,38,0,Math.PI,Math.PI*2);ctx.fill()}
+    for(const p of pipes){pipe(p.x,0,72,p.top,true);pipe(p.x,p.top+p.gap,72,ground-(p.top+p.gap),false)}
+    // ground
+    ctx.fillStyle='#e6c875';ctx.fillRect(0,ground,W,H-ground);ctx.fillStyle='#9dd35c';ctx.fillRect(0,ground,W,12);ctx.fillStyle='#75b64c';for(let x=-((world*.7)%28);x<W;x+=28){ctx.fillRect(x,ground+12,14,5);ctx.fillRect(x+14,ground+28,14,5)}ctx.fillStyle='#bd9658';ctx.fillRect(0,ground+11,W,4);
+    // bird sprite, or simple fallback while assets load
+    ctx.save();ctx.translate(bird.x,bird.y);ctx.rotate(state==='menu'?Math.sin(performance.now()/280)*.06:bird.angle);const im=imgs[selected];if(im&&im.complete&&im.naturalWidth){ctx.imageSmoothingEnabled=false;ctx.drawImage(im,-36,-27,72,54)}else{ctx.fillStyle='#ffd43b';ctx.beginPath();ctx.ellipse(0,0,24,18,0,0,Math.PI*2);ctx.fill();ctx.fillStyle='#f05b4c';ctx.fillRect(12,-2,17,8)}ctx.restore();
+    if(state==='menu'){ctx.fillStyle='#26314b';ctx.font='900 15px system-ui';ctx.textAlign='center';ctx.fillText('DOKUN VE UÇ!',W*.5,H*.75)}
+  }
+  function cloud(x,y,s){ctx.fillStyle='#ffffffb8';ctx.fillRect(x,y,54*s,17*s);ctx.fillRect(x+10*s,y-10*s,22*s,12*s);ctx.fillRect(x+28*s,y-5*s,22*s,10*s)}
+  function pipe(x,y,w,h,top){if(h<=0)return;ctx.fillStyle='#297b54';ctx.fillRect(x,y,w,h);ctx.fillStyle='#54bd72';ctx.fillRect(x+8,y,10,h);ctx.fillStyle='#1b5d49';ctx.fillRect(x+w-9,y,9,h);ctx.fillStyle='#24744f';const capH=22;if(top){ctx.fillRect(x-7,y+h-capH,w+14,capH);ctx.fillStyle='#68cf78';ctx.fillRect(x,y+h-capH+4,11,capH-4)}else{ctx.fillRect(x-7,y,w+14,capH);ctx.fillStyle='#68cf78';ctx.fillRect(x,y,11,capH-4)}ctx.strokeStyle='#164b3d';ctx.lineWidth=3;ctx.strokeRect(x+.5,y+.5,w-1,h-1)}
+  document.querySelector('#startBtn').onclick=start;document.querySelector('#resumeBtn').onclick=()=>{state='playing';hidePanel();last=performance.now();raf=requestAnimationFrame(loop)};
+  document.querySelector('#pauseBtn').onclick=()=>{if(state==='playing'||state==='paused'){if(state==='playing'){state='paused';cancelAnimationFrame(raf)}updateMenu()}else updateMenu()};
+  document.querySelector('#costumeBtn').onclick=()=>{makeCostumes();show('costumePanel')};document.querySelector('#costumeDone').onclick=()=>updateMenu();document.querySelector('#aboutBtn').onclick=()=>show('aboutPanel');document.querySelector('#aboutDone').onclick=()=>updateMenu();
+  document.querySelector('#retryBtn').onclick=start;document.querySelector('#overMenuBtn').onclick=()=>{state='menu';updateMenu()};
+  window.addEventListener('keydown',e=>{if(['Space','ArrowUp'].includes(e.code)){e.preventDefault();if(state==='playing')flap();else if(state==='menu')start()}if(e.key==='Escape'){e.preventDefault();if(state==='playing'){state='paused';cancelAnimationFrame(raf);updateMenu()}else if(state==='paused')updateMenu();else if(state==='over'){state='menu';updateMenu()}else if(!panelWrap.classList.contains('hidden')){state=state==='over'?'menu':state;updateMenu()}}});
+  canvas.addEventListener('pointerdown',e=>{if(state==='playing'){e.preventDefault();flap()}});window.addEventListener('resize',resize);resize();updateMenu();
+})();
+</script><!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <meta
+    name="description"
+    content="Arda ARABAYAPAN'ın kişisel portföy sitesi. Yazılım öğrenme yolculuğu, teknolojiler ve örnek projeler."
+  >
+
+  <meta name="theme-color" content="#0b1120">
+
+  <title>Arda ARABAYAPAN | Kişisel Portföy</title>
+
+  <!-- Bootstrap 5 -->
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+  >
+
+  <!-- Özel CSS -->
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <!-- NAVBAR -->
+  <nav class="navbar navbar-expand-lg navbar-dark fixed-top main-navbar">
+    <div class="container">
+
+      <a class="navbar-brand logo" href="#anasayfa" aria-label="Arda A. ana sayfa">
+        <span class="logo-icon">A.</span>
+        <span class="logo-text">Arda <span>A.</span></span>
+      </a>
+
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#navbarMenu"
+        aria-controls="navbarMenu"
+        aria-expanded="false"
+        aria-label="Menüyü aç veya kapat"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarMenu">
+        <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-3">
+          <li class="nav-item">
+            <a class="nav-link active" href="#anasayfa">Ana Sayfa</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#hakkimda">Hakkımda</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#teknolojiler">Teknolojiler</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#projeler">Projeler</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link contact-link" href="#iletisim">İletişim</a>
+          </li>
+        </ul>
+      </div>
+
+    </div>
+  </nav>
+
+  <main>
+
+    <!-- ANA SAYFA -->
+    <section id="anasayfa" class="hero-section">
+      <div class="container">
+        <div class="row align-items-center min-vh-100 py-5">
+
+          <div class="col-lg-7 hero-content">
+            <div class="status-badge mb-4">
+              <span class="status-dot"></span>
+              Yazılım öğrenme yolculuğum devam ediyor
+            </div>
+
+            <p class="hero-eyebrow">MERHABA, BEN</p>
+
+            <h1>
+              Arda
+              <span class="gradient-text">ARABAYAPAN</span>
+            </h1>
+
+            <h2 class="hero-subtitle">
+              Yazılım Öğrencisi
+            </h2>
+
+            <p class="hero-description">
+              Yazılım dünyasını keşfediyor, yeni teknolojiler öğreniyor
+              ve öğrendiklerimi küçük projelerle geliştirmeyi hedefliyorum.
+              Bu site, öğrenme yolculuğumu ve çalışmalarımı paylaşmak için
+              hazırladığım kişisel portföyümdür.
+            </p>
+
+            <div class="d-flex flex-wrap gap-3 mt-4">
+              <a href="#projeler" class="btn btn-primary-custom">
+                Projelerimi Gör
+                <span aria-hidden="true">→</span>
+              </a>
+
+              <a href="#hakkimda" class="btn btn-outline-custom">
+                Beni Tanı
+              </a>
+            </div>
+
+            <div class="hero-footer mt-5">
+              <span class="small-line"></span>
+              <span>Öğren · Geliştir · Keşfet</span>
+            </div>
+          </div>
+
+          <!-- PROFİL / LOGO ALANI -->
+          <div class="col-lg-5 mt-5 mt-lg-0">
+            <div class="profile-area">
+
+              <div class="orbit orbit-one"></div>
+              <div class="orbit orbit-two"></div>
+
+              <div class="profile-card">
+                <div class="profile-card-top">
+                  <span class="window-dot red"></span>
+                  <span class="window-dot yellow"></span>
+                  <span class="window-dot green"></span>
+                  <span class="ms-auto small">arda.js</span>
+                </div>
+
+                <div class="profile-logo">A.</div>
+
+                <h2>Arda A.</h2>
+                <p>Yazılım Öğrencisi</p>
+
+                <div class="code-divider"></div>
+
+                <div class="code-line">
+                  <span class="code-purple">const</span>
+                  <span class="code-blue"> hedefim</span>
+                  <span class="text-white"> = </span>
+                  <span class="code-green">"gelişmek";</span>
+                </div>
+
+                <div class="code-line">
+                  <span class="code-purple">while</span>
+                  <span class="text-white"> (öğreniyorum) {</span>
+                </div>
+
+                <div class="code-line ps-3">
+                  <span class="code-blue">kendimiGeliştir</span>();
+                </div>
+
+                <div class="code-line text-white">}</div>
+              </div>
+
+              <div class="floating-badge badge-html">HTML</div>
+              <div class="floating-badge badge-css">CSS</div>
+              <div class="floating-badge badge-js">JS</div>
+
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- HAKKIMDA -->
+    <section id="hakkimda" class="section-padding">
+      <div class="container">
+
+        <div class="section-heading text-center">
+          <span class="section-label">BEN KİMİM?</span>
+          <h2>Hakkımda <span class="gradient-text">Kısa Bir Bilgi</span></h2>
+          <p>Yazılım öğrenme sürecim ve hedeflerim.</p>
+        </div>
+
+        <div class="row g-4 align-items-stretch mt-3">
+
+          <div class="col-lg-7">
+            <article class="info-card h-100">
+              <h3>Merhaba, ben Arda!</h3>
+
+              <p>
+                Ben Arda ARABAYAPAN. Yazılım dersleri alıyorum ve yazılım
+                geliştirme alanında kendimi geliştirmeye çalışıyorum.
+                Teknolojinin nasıl çalıştığını anlamak ve kendi
+                projelerimi oluşturmak ilgimi çekiyor.
+              </p>
+
+              <p>
+                Şu anda temel web teknolojilerine odaklanıyorum.
+                Öğrendiklerimi uygulayarak pekiştirmeyi, zamanla daha
+                kapsamlı projeler geliştirmeyi ve yeni araçlar keşfetmeyi
+                hedefliyorum.
+              </p>
+
+              <p class="mb-0">
+                Bu portföy, öğrenme sürecimi paylaşmak ve gelişimimi
+                göstermek için hazırladığım kişisel bir web sitesidir.
+              </p>
+            </article>
+          </div>
+
+          <div class="col-lg-5">
+            <article class="info-card goals-card h-100">
+              <h3>Hedeflerim</h3>
+
+              <ul class="goals-list">
+                <li>
+                  <span class="goal-icon" aria-hidden="true">01</span>
+                  <div>
+                    <h4>Temelleri Öğrenmek</h4>
+                    <p>HTML, CSS ve JavaScript bilgilerimi geliştirmek.</p>
+                  </div>
+                </li>
+
+                <li>
+                  <span class="goal-icon" aria-hidden="true">02</span>
+                  <div>
+                    <h4>Projeler Geliştirmek</h4>
+                    <p>Öğrendiklerimi uygulamalı çalışmalarla pekiştirmek.</p>
+                  </div>
+                </li>
+
+                <li>
+                  <span class="goal-icon" aria-hidden="true">03</span>
+                  <div>
+                    <h4>Kendimi Geliştirmek</h4>
+                    <p>Yeni teknolojiler keşfetmek ve öğrenmeye devam etmek.</p>
+                  </div>
+                </li>
+              </ul>
+
+            </article>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- TEKNOLOJİLER -->
+    <section id="teknolojiler" class="section-padding section-alt">
+      <div class="container">
+
+        <div class="section-heading text-center">
+          <span class="section-label">ÖĞRENME YOLCULUĞUM</span>
+          <h2>İlgilendiğim <span class="gradient-text">Teknolojiler</span></h2>
+          <p>Web geliştirme alanında üzerinde çalıştığım temel araçlar.</p>
+        </div>
+
+        <div class="row g-4 mt-3">
+
+          <div class="col-sm-6 col-lg-3">
+            <article class="tech-card h-100">
+              <div class="tech-icon html-icon">5</div>
+              <h3>HTML5</h3>
+              <p>Web sayfalarının yapısını ve içeriklerini oluşturmak.</p>
+              <span class="tech-tag">Yapı</span>
+            </article>
+          </div>
+
+          <div class="col-sm-6 col-lg-3">
+            <article class="tech-card h-100">
+              <div class="tech-icon css-icon">3</div>
+              <h3>CSS3</h3>
+              <p>Sayfaların görünümünü, renklerini ve düzenini tasarlamak.</p>
+              <span class="tech-tag">Tasarım</span>
+            </article>
+          </div>
+
+          <div class="col-sm-6 col-lg-3">
+            <article class="tech-card h-100">
+              <div class="tech-icon js-icon">JS</div>
+              <h3>JavaScript</h3>
+              <p>Web sayfalarına etkileşim ve dinamik özellikler eklemek.</p>
+              <span class="tech-tag">Etkileşim</span>
+            </article>
+          </div>
+
+          <div class="col-sm-6 col-lg-3">
+            <article class="tech-card h-100">
+              <div class="tech-icon bootstrap-icon">B</div>
+              <h3>Bootstrap 5</h3>
+              <p>Duyarlı tasarımlar ve hazır arayüz bileşenleri kullanmak.</p>
+              <span class="tech-tag">Arayüz</span>
+            </article>
+          </div>
+
+        </div>
+
+        <p class="section-note text-center mt-4">
+          Bu bölüm, üzerinde çalışmayı hedeflediğim teknolojileri gösterir.
+          İlerledikçe kendi gerçek öğrenme durumuma göre güncelleyebilirim.
+        </p>
+
+      </div>
+    </section>
+
+    <!-- PROJELER -->
+    <section id="projeler" class="section-padding">
+      <div class="container">
+
+        <div class="section-heading text-center">
+          <span class="section-label">ÇALIŞMALAR</span>
+          <h2>Örnek <span class="gradient-text">Projeler</span></h2>
+          <p>Portföyümü geliştirmek için değerlendirebileceğim proje fikirleri.</p>
+        </div>
+
+        <div class="row g-4 mt-3">
+
+          <div class="col-md-6 col-lg-4">
+            <article class="project-card h-100">
+              <div class="project-visual visual-one">
+                <span class="project-symbol" aria-hidden="true">&lt;/&gt;</span>
+                <span class="project-number">01</span>
+              </div>
+
+              <div class="project-content">
+                <span class="project-status">ÖRNEK FİKİR</span>
+                <h3>Kişisel Portföy</h3>
+                <p>
+                  Kişisel bilgilerimi, öğrendiğim teknolojileri ve çalışmalarımı
+                  tanıtabileceğim bir web sitesi.
+                </p>
+
+                <div class="project-tags">
+                  <span>HTML</span>
+                  <span>CSS</span>
+                  <span>Bootstrap</span>
+                </div>
+              </div>
+            </article>
+          </div>
+
+          <div class="col-md-6 col-lg-4">
+            <article class="project-card h-100">
+              <div class="project-visual visual-two">
+                <span class="project-symbol" aria-hidden="true">✓</span>
+                <span class="project-number">02</span>
+              </div>
+
+              <div class="project-content">
+                <span class="project-status">ÖRNEK FİKİR</span>
+                <h3>Yapılacaklar Listesi</h3>
+                <p>
+                  Görev ekleme, tamamlama ve silme özelliklerine sahip
+                  basit bir JavaScript uygulaması.
+                </p>
+
+                <div class="project-tags">
+                  <span>HTML</span>
+                  <span>CSS</span>
+                  <span>JavaScript</span>
+                </div>
+              </div>
+            </article>
+          </div>
+
+          <div class="col-md-6 col-lg-4">
+            <article class="project-card h-100">
+              <div class="project-visual visual-three">
+                <span class="project-symbol" aria-hidden="true">{ }</span>
+                <span class="project-number">03</span>
+              </div>
+
+              <div class="project-content">
+                <span class="project-status">ÖRNEK FİKİR</span>
+                <h3>Mini Bilgi Kartları</h3>
+                <p>
+                  Öğrenilen kavramları kartlar üzerinde gösterebileceğim
+                  basit ve duyarlı bir web arayüzü.
+                </p>
+
+                <div class="project-tags">
+                  <span>HTML</span>
+                  <span>CSS</span>
+                  <span>Bootstrap</span>
+                </div>
+              </div>
+            </article>
+          </div>
+
+        </div>
+
+        <p class="section-note text-center mt-4">
+          Not: Bu kartlar örnek proje fikirleridir; tamamlanmış projeler
+          veya mevcut çalışmalar olarak değerlendirilmemelidir.
+        </p>
+
+      </div>
+    </section>
+
+    <!-- İLETİŞİM -->
+    <section id="iletisim" class="section-padding section-alt">
+      <div class="container">
+
+        <div class="contact-panel text-center">
+          <span class="section-label">İLETİŞİM</span>
+
+          <h2>
+            Birlikte <span class="gradient-text">Tanışalım</span>
+          </h2>
+
+          <p>
+            Benimle iletişim kurmak veya çalışmalarım hakkında konuşmak
+            istersen aşağıdaki e-posta bağlantısını kullanabilirsin.
+          </p>
+
+          <!-- Bu adresi kendi e-posta adresinle değiştir. -->
+          <a
+            class="btn btn-primary-custom mt-3"
+            href="mailto:eposta-adresin@example.com"
+          >
+            <span aria-hidden="true">✉</span>
+            E-posta Gönder
+          </a>
+
+          <p class="email-note mt-3">
+            E-posta bağlantısını kullanmadan önce örnek adresi kendi
+            adresinle değiştirmeyi unutma.
+          </p>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="d-flex flex-column flex-md-row justify-content-between align-items-center gap-3">
+
+        <a class="navbar-brand logo" href="#anasayfa" aria-label="Sayfanın başına dön">
+          <span class="logo-icon">A.</span>
+          <span class="logo-text">Arda <span>A.</span></span>
+        </a>
+
+        <p class="footer-text mb-0">
+          © <span id="currentYear">2026</span> Arda ARABAYAPAN.
+          Öğrenmeye ve gelişmeye devam.
+        </p>
+
+        <a href="#anasayfa" class="back-to-top">
+          Yukarı çık ↑
+        </a>
+
+      </div>
+    </div>
+  </footer>
+
+  <!-- Bootstrap JavaScript -->
+  <script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+  ></script>
+
+  <!-- Özel JavaScript -->
+  <script src="script.js"></script>
+
+  <elevenlabs-convai agent-id="agent_1901m68ayn2herrse5emrzhw4jmd"></elevenlabs-convai><script src="https://unpkg.com/@elevenlabs/convai-widget-embed" async type="text/javascript"></script>
+</body>
+</html>
+</body>
+</html>
