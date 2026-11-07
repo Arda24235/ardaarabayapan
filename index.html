@@ -454,6 +454,43 @@
     </div>
   </footer>
 
+  <!-- 3 saniye sonra açılan tanıtım videosu modalı -->
+  <div
+    class="modal fade"
+    id="tanitimVideoModal"
+    tabindex="-1"
+    aria-labelledby="tanitimVideoModalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable">
+      <div class="modal-content bg-dark border-0">
+        <div class="modal-header border-0">
+          <h5 class="modal-title text-white" id="tanitimVideoModalLabel">Tanıtım Videosu</h5>
+          <button
+            type="button"
+            class="btn-close btn-close-white"
+            data-bs-dismiss="modal"
+            aria-label="Kapat"
+          ></button>
+        </div>
+        <div class="modal-body p-2 p-md-3">
+          <video
+            id="tanitimVideo"
+            class="w-100 rounded"
+            controls
+            autoplay
+            muted
+            playsinline
+            preload="auto"
+          >
+            <source src="video.mp4" type="video/mp4">
+            Tarayıcınız video oynatmayı desteklemiyor.
+          </video>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- Bootstrap JavaScript -->
   <script
     src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
@@ -461,6 +498,42 @@
 
   <!-- Özel JavaScript -->
   <script src="script.js"></script>
+
+
+  <!-- Tanıtım videosu modal kontrolü -->
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const videoModalElement = document.getElementById("tanitimVideoModal");
+      const videoElement = document.getElementById("tanitimVideo");
+
+      const videoModal = new bootstrap.Modal(videoModalElement);
+
+      // Sayfa açıldıktan 3 saniye sonra modalı göster.
+      window.setTimeout(function () {
+        videoModal.show();
+
+        // Modal görünür olduktan sonra videoyu oynatmayı dene.
+        videoModalElement.addEventListener("shown.bs.modal", function () {
+          videoElement.play().catch(function (error) {
+            // Otomatik oynatma engellenirse kullanıcı videodaki oynat
+            // düğmesine basarak videoyu başlatabilir.
+            console.warn("Video otomatik başlatılamadı:", error);
+          });
+        }, { once: true });
+      }, 3000);
+
+      // Video sona erdiğinde modalı otomatik kapat.
+      videoElement.addEventListener("ended", function () {
+        videoModal.hide();
+      });
+
+      // Modal kapatıldığında videoyu durdur ve başa sar.
+      videoModalElement.addEventListener("hidden.bs.modal", function () {
+        videoElement.pause();
+        videoElement.currentTime = 0;
+      });
+    });
+  </script>
 
   <elevenlabs-convai agent-id="agent_1901m68ayn2herrse5emrzhw4jmd"></elevenlabs-convai><script src="https://unpkg.com/@elevenlabs/convai-widget-embed" async type="text/javascript"></script>
 </body>
